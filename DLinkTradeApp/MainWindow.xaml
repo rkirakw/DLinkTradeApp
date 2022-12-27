@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DLinkTradeApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1200" Icon="pack://application:,,,/Resources/Dlogo.png"
+        Title="D-Store" Height="720" Width="1200" ResizeMode="NoResize"  Icon="pack://application:,,,/Resources/Dlogo.png"
         KeyDown="Page_PreviewKeyDown" Closed="Window_Closed">
     <Frame x:Name="screenFrame" NavigationUIVisibility="Hidden"/>
 </Window>

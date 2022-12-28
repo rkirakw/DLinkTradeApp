@@ -4,12 +4,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace DLinkTradeApp {
 
@@ -19,6 +21,8 @@ namespace DLinkTradeApp {
         public string ProductType { get; set; }
         public string Cost { get; set; }
         public string Description { get; set; }
+
+        public BitmapImage Image { get; set; }
 
         public Product(int id, string name, string type, string cost, string description) {
             ID = id;
@@ -142,6 +146,15 @@ namespace DLinkTradeApp {
                                                   data[rowIndex]["ProductType"].ToString(),
                                                   data[rowIndex]["Cost"].ToString(),
                                         (string)  data[rowIndex]["ProductDescription"]);
+                 using(MemoryStream ms = new MemoryStream((byte[])data[rowIndex]["Image"])) {
+                    var image = new BitmapImage();
+                    image.BeginInit();
+                    image.StreamSource = ms;
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.EndInit();
+                    prod.Image = image;
+                 }
+
                  Products.Table.Add(prod);
             }
         }

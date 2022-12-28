@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,17 @@ namespace DLinkTradeApp.InnerPages {
             }
             else if (param != null && param.ToString() == "COST")
                 return Manager.Products._table.Select($"id={value}")[0]["Cost"];
+            else if (param != null && param.ToString() == "IMAGE") {
+                byte[] data = (byte[])Manager.Products._table.Select($"id={value}")[0]["Image"];
+                using(MemoryStream ms = new MemoryStream(data)) {
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.StreamSource = ms;
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    return img;
+                }
+            }
 
             return "Undefined";
         }

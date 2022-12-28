@@ -17,7 +17,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Height="50" Width="50" Source="pack://application:,,,/Resources/Dlogo.png"/>
+                            <Image Height="50" Width="50" Source="{Binding ProductID, ConverterParameter=IMAGE, Converter={StaticResource orderConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

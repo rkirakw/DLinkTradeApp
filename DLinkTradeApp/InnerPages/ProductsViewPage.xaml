@@ -17,7 +17,7 @@
                 <DataTemplate>
                     <Border Margin="5" BorderThickness="3" BorderBrush="SteelBlue" CornerRadius="4">
                         <StackPanel Margin="3">
-                            <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="pack://application:,,,/Resources/Dlogo.png"/>
+                            <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="{Binding Image}"/>
                             <TextBlock Foreground="Azure" x:Name="desc" Width="200" Height="175" Visibility="Collapsed" Text="{Binding Description}" TextWrapping="Wrap"/>
                             <Button x:Name="buyButton" Background="LightGreen" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed"/>
                             <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>

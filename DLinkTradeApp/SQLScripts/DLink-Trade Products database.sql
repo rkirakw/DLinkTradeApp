@@ -20,6 +20,7 @@ create table Products(
     ProductType int,
     Cost int,
     ProductDescription text,
+    Image mediumblob,
     constraint products_pk primary key(ID),
     constraint type_fk
     foreign key(ProductType)

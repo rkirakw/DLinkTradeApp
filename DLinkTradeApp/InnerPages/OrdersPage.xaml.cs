@@ -57,22 +57,25 @@ namespace DLinkTradeApp.InnerPages {
         private OrdersPage() {
             InitializeComponent();
 
-            dataGrid.ItemsSource = Manager.Orders.Table;
+            listBox.ItemsSource = Manager.Orders.Table;
         }
 
         public void ForceUpdate() {
-            // Установить режим сортировки в режим по умолчанию
-            for (int i = 0; i < dataGrid.Columns.Count; i++) {
-                dataGrid.Columns[i].SortDirection = null;
-            }
-            // Очистить сортировку из представления DataGrid
-            CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).SortDescriptions.Clear();
-
-            dataGrid.Items.Refresh();
+            listBox.Items.Refresh();
         }
 
         static OrdersPage() {
             get = new OrdersPage();
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e) {
+            Order order = (Order)(sender as Button).DataContext;
+            Manager.Delete("orders", order.ID);
+            Manager.Orders.Update();
+            Manager.GetOrders();
+            ForceUpdate();
+            Manager.ResetAutoINC("orders");
+
         }
     }
 }

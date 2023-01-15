@@ -51,3 +51,18 @@ create table Orders(
     references Storages(ID)
 );
 
+delimiter //
+create procedure reset_auto_inc(in tbname varchar(100))
+begin
+	set @mxstatement = concat('set @result = (select max(ID) from ', tbname, ')');
+	prepare maxID from @mxstatement;
+    execute maxID;
+    
+    set @resetAutoInc = concat('alter table ', tbname, ' AUTO_INCREMENT = ', @result);
+    prepare rai from @resetAutoInc;
+    execute rai;
+    
+    deallocate prepare rai;
+    deallocate prepare maxID;
+end//
+delimiter ;

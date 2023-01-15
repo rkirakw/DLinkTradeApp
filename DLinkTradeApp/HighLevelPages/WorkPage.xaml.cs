@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,8 +32,12 @@ namespace DLinkTradeApp.HighLevelPages {
 
         private void ChangePageButton(object sender, RoutedEventArgs e) {
             int index = int.Parse((e.OriginalSource as Button).Tag as string);
-            pageName.Content = Manager.SetCurrentPage(index);
+            ChangePage(index);
         }
 
+        // Переключает страницу и устанавливает заголовок
+        public void ChangePage(int page, params object[] param) {
+            pageName.Content = Manager.SetCurrentPage(page, param);
+        }
     }
 }

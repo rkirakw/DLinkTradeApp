@@ -48,7 +48,7 @@ namespace DLinkTradeApp.InnerPages {
             // TODO Сначала добавлять в корзину, а в заказы добавлять ТОЛЬКО ИЗ КОРЗИНЫ
 
             Product pr = (Product)dataGrid.SelectedItem;
-            Manager.Insert("orders", "UserID, ProductID, StorageID, Amount", $"{Manager._uid}, {pr.ID}, 1, 1");
+            Manager.Insert("orders", "UserID, ProductID, StorageID, Amount", $"{Manager.userData.UID}, {pr.ID}, 1, 1");
             Manager.Orders.Update();
         }
     }

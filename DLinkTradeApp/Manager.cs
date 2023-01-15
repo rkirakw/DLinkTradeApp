@@ -12,10 +12,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Text.Json;
 
 namespace DLinkTradeApp {
 
-    class Product {
+    public class Product {
         public int ID { get; set; }
         public string ProductName { get; set; }
         public string ProductType { get; set; }
@@ -38,6 +39,7 @@ namespace DLinkTradeApp {
         public int ProductID { get; set; }
         public int StorageID { get; set; }
         public int Amount { get; set; }
+        public int TotalPrice { get; set; }
 
         public Order(int _id, int uid, int pid, int sid, int _amount) {
             ID = _id;
@@ -73,13 +75,34 @@ namespace DLinkTradeApp {
         }
     }
 
+    class DataBaseConnectionData {
+        public string Server { get; set; }
+        public string User { get; set; }
+        public string Database { get; set; }
+        public string Port { get; set; }
+        public string Password { get; set; }
+    }
+
+    class UserData {
+        public int UID { get; private set; }
+        public string Email { get; private set; }
+        public string Login { get; private set; }
+        public string Phone { get; private set; }
+
+        public UserData(int uid, string email, string login, string phone) {
+            UID = uid;
+            Email = email;
+            Login = login;
+            Phone = phone;
+        }
+    }
 
     internal static class Manager {
         private static Dictionary<string, string> _pages;
         private static Frame _mainFrame;
 
         // Уникальный идентификатор пользователя
-        public static int _uid { get; private set; }
+        public static UserData userData { get; private set; }
 
         public static MySqlConnection GetConnection { get; private set; }
 
@@ -92,11 +115,8 @@ namespace DLinkTradeApp {
 
 
 
-
-
-        public static void Init(Frame mainFrame, int UID = 1) {
+        public static void Init(Frame mainFrame) {
             _mainFrame = mainFrame;
-            _uid = UID;
             _pages = new Dictionary<string, string>() { { "Коммутаторы",       "ProductType=1" },
                                                         { "Маршрутизаторы",    "ProductType=2"},
                                                         { "Межсетевые экраны", "ProductType=3" },
@@ -107,21 +127,29 @@ namespace DLinkTradeApp {
             ProductTypes = new DataBaseTable<ProductType>();
 
             // Установка соеденения с базой данных
-            string connStr = "server=localhost;user=root;database=productsdb;port=3306;password=pqek100T;";
-            GetConnection = new MySqlConnection(connStr);
-            GetConnection.Open();
+            string connStr = string.Empty;
+            using(FileStream fs = new FileStream("config.json", FileMode.OpenOrCreate)) {
+                var data = JsonSerializer.Deserialize<DataBaseConnectionData>(fs);
+                connStr = $"server={data.Server};user={data.User};database={data.Database};port={data.Port};password={data.Password};";
+            }
+            try {
+                GetConnection = new MySqlConnection(connStr);
+                GetConnection.Open();
+            }
+            catch(MySqlException ex) {
+                MessageBox.Show("Access denied");
+                MainWindow._instance.Close();
+            }
 
 
             LoadDataBase(Products, "select * from products");
             LoadDataBase(ProductTypes, "select * from producttypes");
-            LoadDataBase(Orders, $"select * from orders where UserID = {_uid}", true);
             
         }
 
         private static void LoadDataBase<T>(DataBaseTable<T> data, string sql, bool updateCommand = false) {
             MySqlCommand sqlCmd = new MySqlCommand(sql, GetConnection);
-            sqlCmd.ExecuteNonQuery();
-
+            //sqlCmd.ExecuteNonQuery();
 
             data.dataAdapter = new MySqlDataAdapter(sqlCmd);
             if (updateCommand) {
@@ -130,7 +158,7 @@ namespace DLinkTradeApp {
                 data.dataAdapter.UpdateCommand = updateCmd;
             }
             data._table = new DataTable();
-            data.dataAdapter.Fill(data._table);
+            data.dataAdapter.Fill(data._table); //Запрос на получение выполняется в этой точке
         }
 
 
@@ -171,6 +199,8 @@ namespace DLinkTradeApp {
                                        (int)     data[rowIndex]["ProductID"],
                                        (int)     data[rowIndex]["StorageID"],
                                        (int)     data[rowIndex]["Amount"]);
+
+                order.TotalPrice = order.Amount * int.Parse(Products._table.Select($"ID={order.ProductID}")[0]["Cost"].ToString());
                 Orders.Table.Add(order);
             }
         }
@@ -181,13 +211,46 @@ namespace DLinkTradeApp {
             insertCommand.ExecuteNonQuery();
         }
 
-        public static string SetCurrentPage(int pageIndex) {
+        public static void Delete(string table, int id) {
+            MySqlCommand deleteCommand = new MySqlCommand($"delete from {table} where ID = {id}", GetConnection);
+            deleteCommand.ExecuteNonQuery();
+        }
+
+        public static bool CheckUser(string login, string password) {
+            string cmd = $"select * from users where login = '{login}' and pass = '{password}'";
+            MySqlCommand select = new MySqlCommand(cmd, GetConnection);
+
+            var reader = select.ExecuteReader();
+            bool userAvailable = reader.HasRows;
+            if (reader.Read())
+                userData = new UserData((int)reader["ID"], reader["Email"].ToString(), login, reader["Phone"].ToString());
+            reader.Close();
+
+            if(userAvailable)
+                LoadDataBase(Orders, $"select * from orders where UserID = {userData.UID}", true);
+
+
+            return userAvailable;
+        }
+
+        // Сброс значения инкремента в БД
+        public static void ResetAutoINC(string table) {
+            MySqlCommand autoIncReset = new MySqlCommand($"call reset_auto_inc('{table}')", GetConnection);
+            autoIncReset.ExecuteNonQuery();
+        }
+
+        public static string SetCurrentPage(int pageIndex, params object[] p) {
             if(pageIndex == 4) {
                 //TODO ...
                 GetOrders();
                 _mainFrame.Navigate(OrdersPage.get);
                 OrdersPage.get.ForceUpdate();
                 return "Заказы";
+            }
+            else if(pageIndex == 5) {
+                if (p[0] is Product)
+                    _mainFrame.Navigate(new BuyPage(p[0] as Product));
+                return "Оформление заказа";
             }
 
             
@@ -199,5 +262,7 @@ namespace DLinkTradeApp {
 
             return element.Key;
         }
+
+        public static void GoBack() => _mainFrame.GoBack();
     }
 }

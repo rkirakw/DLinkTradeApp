@@ -39,6 +39,7 @@
 
         <Frame x:Name="mainFrame"
                NavigationUIVisibility="Hidden"
+               JournalOwnership="OwnsJournal"
                Grid.Column="1" Margin="0,12,0,0" Grid.Row="1"/>
     </Grid>
 </Page>

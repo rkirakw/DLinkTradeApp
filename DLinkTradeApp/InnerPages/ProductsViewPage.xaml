@@ -11,35 +11,38 @@
         <local:TypeConverter x:Key="typeConverter"/>
     </Page.Resources>
 
-    <Grid Background="#FF54F783">
-        <ListBox x:Name="listBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#FF292828">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="5" BorderThickness="3" BorderBrush="SteelBlue" CornerRadius="4">
-                        <StackPanel Margin="3">
-                            <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="{Binding Image}"/>
-                            <TextBlock Foreground="Azure" x:Name="desc" Width="200" Height="175" Visibility="Collapsed" Text="{Binding Description}" TextWrapping="Wrap"/>
-                            <Button x:Name="buyButton" Background="LightGreen" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed"/>
-                            <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>
-                            <TextBlock Foreground="Azure" Text="{Binding StringFormat=Название: {0}, Path=ProductName}"/>
-                            <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0}, Path=Cost}"/>
-                        </StackPanel>
-                    </Border>
-                    <DataTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="img" Property="Visibility" Value="Collapsed"/>
-                            <Setter TargetName="desc" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="buyButton" Property="Visibility" Value="Visible"/>
-                        </Trigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+    <Grid Background="#FF292828">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="listBox" Background="#FF292828">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="5" BorderThickness="3" BorderBrush="SteelBlue" CornerRadius="4">
+                            <StackPanel Margin="3">
+                                <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="{Binding Image}"/>
+                                <TextBlock Foreground="Azure" x:Name="desc" Width="200" Height="175" Visibility="Collapsed" Text="{Binding Description}" TextWrapping="Wrap"/>
+                                <Button x:Name="buyButton" Background="LightGreen" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Название: {0}, Path=ProductName}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0}, Path=Cost}"/>
+                            </StackPanel>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="img" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="desc" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="buyButton" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
 
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListBox>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Page>

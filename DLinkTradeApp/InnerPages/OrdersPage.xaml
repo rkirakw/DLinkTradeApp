@@ -11,21 +11,32 @@
         <local:OrderConverter x:Key="orderConverter"/>
     </Page.Resources>
 
-    <Grid Background="LightSeaGreen">
-        <DataGrid x:Name="dataGrid" Grid.Row="1" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Height="50" Width="50" Source="{Binding ProductID, ConverterParameter=IMAGE, Converter={StaticResource orderConverter}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Width="*" Header="Название" Binding="{Binding ProductID, ConverterParameter=NAME, Converter={StaticResource orderConverter}}"/>
-                <DataGridTextColumn Width="*" Header="Тип" Binding="{Binding ProductID, ConverterParameter=TYPE, Converter={StaticResource orderConverter}}"/>
-                <DataGridTextColumn Width="*" Header="Стоимость" Binding="{Binding ProductID, ConverterParameter=COST, Converter={StaticResource orderConverter}}"/>
-                <DataGridTextColumn Width="*" Header="Количество" Binding="{Binding Amount}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+    <Grid Background="Gray">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="listBox" Background="#FF292828">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="5" BorderThickness="3" BorderBrush="SteelBlue" CornerRadius="4">
+                            <StackPanel Margin="3">
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Название: {0}, Path=ProductID, ConverterParameter=NAME, Converter={StaticResource orderConverter}}"/>
+                                <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="{Binding ProductID, ConverterParameter=IMAGE, Converter={StaticResource orderConverter}}"/>
+                                <Button x:Name="buyButton" Background="Red" Style="{StaticResource buyButton}" Click="cancelButton_Click" Foreground="Black" Content="Отменить" Visibility="Visible"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, Path=ProductID, ConverterParameter=TYPE, Converter={StaticResource orderConverter}}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0}, Path=ProductID, ConverterParameter=COST, Converter={StaticResource orderConverter}}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Кол-во: {0}, Path=Amount}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat='Общая стоимость: {0}', Path=TotalPrice}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Page>

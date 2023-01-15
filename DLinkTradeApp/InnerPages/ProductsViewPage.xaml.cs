@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DLinkTradeApp.HighLevelPages;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -50,8 +51,7 @@ namespace DLinkTradeApp.InnerPages {
             // TODO Открытие меню для выбора кол-ва товара и пункта выдачи
 
             Product pr = (Product)(sender as Button).DataContext;
-            Manager.Insert("orders", "UserID, ProductID, StorageID, Amount", $"{Manager._uid}, {pr.ID}, 1, 1");
-            Manager.Orders.Update();
+            WorkPage.get.ChangePage(5, pr);
         }
     }
 }

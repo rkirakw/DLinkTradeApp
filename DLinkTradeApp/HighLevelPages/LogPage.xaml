@@ -6,9 +6,36 @@
       xmlns:local="clr-namespace:DLinkTradeApp.HighLevelPages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LogPage">
+      Title="LogPage" KeyDown="Page_KeyDown">
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
 
-    <Grid>
-        
+    <Grid Background="LightCyan">
+        <Image Height="145" Source="pack://application:,,,/Resources/dlinklogo.png" HorizontalAlignment="Center" Stretch="UniformToFill" Width="345" VerticalAlignment="Top"/>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="fieldPanel">
+            <TextBlock Text="Авторизация" FontSize="20" HorizontalAlignment="Center" Foreground="Azure"
+                       FontFamily="Times New Roman"/>
+            <TextBox Width="200" Height="25" x:Name="loginText" HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     FontSize="14"
+                     FontFamily="Times New Roman" Margin="0 5 0 0">
+                <TextBox.Text>
+                    <Binding Path="Login" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <PasswordBox Width="200" Height="25" Margin="0 5 0 0" x:Name="pass" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button x:Name="logButton" Width="100" Margin="0 5 0 0" Content="Войти" Click="LogButtonClick" Style="{x:Null}"/>
+        </StackPanel>
     </Grid>
 </Page>

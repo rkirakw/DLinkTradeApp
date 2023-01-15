@@ -19,15 +19,19 @@ namespace DLinkTradeApp {
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        public static MainWindow _instance { get; private set; }
         public MainWindow() {
             InitializeComponent();
+            _instance = this;
 
             //TODO Заменить на LogPage.get!!!
-            screenFrame.Navigate(WorkPage.get);
+            var _temp = WorkPage.get;
+            screenFrame.Navigate(LogPage.get);
         }
 
         private void Page_PreviewKeyDown(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Tab)
+            var obj = (e.Source as FrameworkElement)?.Tag ?? "__none";
+            if ((obj.Equals("__none") || !obj.Equals("__handle_tab")) && e.Key == Key.Tab)
                 e.Handled = true;
         }
 

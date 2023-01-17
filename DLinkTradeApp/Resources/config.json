@@ -1,7 +1,7 @@
 {
   "Server": "localhost",
   "User": "root",
-  "Database": "productsdb",
+  "Database": "user2",
   "Port": "3306",
-  "Password": "pqek100T"
+  "Password": "12345678"
 }

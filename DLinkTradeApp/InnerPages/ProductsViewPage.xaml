@@ -12,8 +12,23 @@
     </Page.Resources>
 
     <Grid Background="#FF292828">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Height="25">
+                <TextBlock Text="Поиск: " Foreground="Azure" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox x:Name="searchBox" Foreground="Azure" Width="200" Background="DarkGray" TextChanged="searchBox_Changed"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Тип продукта: " Foreground="Azure" TextAlignment="Right" Width="100"/>
+                <ComboBox x:Name="typeBox" Width="150" SelectionChanged="typeBox_SelectionChanged" DisplayMemberPath="TypeName"/>
+            </StackPanel>
+        </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled">
+                      HorizontalScrollBarVisibility="Disabled"
+                      Grid.Row="1">
             <ItemsControl x:Name="listBox" Background="#FF292828">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

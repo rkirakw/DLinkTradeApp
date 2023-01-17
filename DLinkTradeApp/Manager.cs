@@ -19,13 +19,13 @@ namespace DLinkTradeApp {
     public class Product {
         public int ID { get; set; }
         public string ProductName { get; set; }
-        public string ProductType { get; set; }
+        public int ProductType { get; set; }
         public string Cost { get; set; }
         public string Description { get; set; }
 
         public BitmapImage Image { get; set; }
 
-        public Product(int id, string name, string type, string cost, string description) {
+        public Product(int id, string name, int type, string cost, string description) {
             ID = id;
             ProductName = name;
             ProductType = type;
@@ -120,7 +120,8 @@ namespace DLinkTradeApp {
             _pages = new Dictionary<string, string>() { { "Коммутаторы",       "ProductType=1" },
                                                         { "Маршрутизаторы",    "ProductType=2"},
                                                         { "Межсетевые экраны", "ProductType=3" },
-                                                        { "Медиа конвертеры",  "ProductType=4" } };
+                                                        { "Медиа конвертеры",  "ProductType=4" },
+                                                        { "Все продукты",      ""              },};
 
             Products = new DataBaseTable<Product>();
             Orders = new DataBaseTable<Order>();
@@ -141,12 +142,11 @@ namespace DLinkTradeApp {
 
             LoadDataBase(Products, "select * from products");
             LoadDataBase(ProductTypes, "select * from producttypes");
-            
+            GetProductTypes();
         }
 
         private static void LoadDataBase<T>(DataBaseTable<T> data, string sql, bool updateCommand = false) {
             MySqlCommand sqlCmd = new MySqlCommand(sql, GetConnection);
-            //sqlCmd.ExecuteNonQuery();
 
             data.dataAdapter = new MySqlDataAdapter(sqlCmd);
             if (updateCommand) {
@@ -159,6 +159,18 @@ namespace DLinkTradeApp {
         }
 
 
+        public static void GetProductTypes() {
+            ProductTypes.Table.Clear();
+            var data = ProductTypes._table.Select();
+
+            for(int rowIndex = 0; rowIndex < data.Length; rowIndex++) {
+                var prodType = new ProductType((int)       data[rowIndex]["ID"],
+                                               (string)    data[rowIndex]["TypeName"]);
+                ProductTypes.Table.Add(prodType);
+            }
+        }
+
+
         // Получение списка продуктов
         public static void GetProducts(string rowFilter = "") {
             Products.Table.Clear();
@@ -168,7 +180,7 @@ namespace DLinkTradeApp {
             for(int rowIndex = 0; rowIndex < data.Length; rowIndex++) {
                  var prod = new Product((int)     data[rowIndex]["ID"],
                                         (string)  data[rowIndex]["ProductName"],
-                                                  data[rowIndex]["ProductType"].ToString(),
+                                        (int)     data[rowIndex]["ProductType"],
                                                   data[rowIndex]["Cost"].ToString(),
                                         (string)  data[rowIndex]["ProductDescription"]);
                  using(MemoryStream ms = new MemoryStream((byte[])data[rowIndex]["Image"])) {
@@ -197,7 +209,7 @@ namespace DLinkTradeApp {
                                        (int)     data[rowIndex]["StorageID"],
                                        (int)     data[rowIndex]["Amount"]);
 
-                order.TotalPrice = order.Amount * int.Parse(Products._table.Select($"ID={order.ProductID}")[0]["Cost"].ToString());
+                order.TotalPrice = order.Amount * (int)Products._table.Select($"ID={order.ProductID}")[0]["Cost"];
                 Orders.Table.Add(order);
             }
         }
@@ -237,14 +249,14 @@ namespace DLinkTradeApp {
         }
 
         public static string SetCurrentPage(int pageIndex, params object[] p) {
-            if(pageIndex == 4) {
+            if(pageIndex == 5) {
                 //TODO ...
                 GetOrders();
                 _mainFrame.Navigate(OrdersPage.get);
                 OrdersPage.get.ForceUpdate();
                 return "Заказы";
             }
-            else if(pageIndex == 5) {
+            else if(pageIndex == 6) {
                 if (p[0] is Product)
                     _mainFrame.Navigate(new BuyPage(p[0] as Product));
                 return "Оформление заказа";

@@ -26,8 +26,8 @@ namespace DLinkTradeApp.InnerPages {
             if (param != null && param.ToString() == "NAME")
                 return Manager.Products._table.Select($"id={value}")[0]["ProductName"];
             else if (param != null && param.ToString() == "TYPE") {
-                object typeID = Manager.Products._table.Select($"id={value}")[0]["ProductType"];
-                object typeName = Manager.ProductTypes._table.Select($"id={typeID}")[0]["TypeName"];
+                int typeID = (int)Manager.Products._table.Select($"id={value}")[0]["ProductType"];
+                object typeName = Manager.ProductTypes.Table.Find(pt => pt.ID == typeID).TypeName;
                 return typeName;
             }
             else if (param != null && param.ToString() == "COST")

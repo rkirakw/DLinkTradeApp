@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -20,7 +21,7 @@ namespace DLinkTradeApp.InnerPages {
     public class TypeConverter : IValueConverter {
         public object Convert(object value, Type targetType, object param, CultureInfo culture) {
             if (param != null && param.ToString() == "TYPE") {
-                object typeName = Manager.ProductTypes._table.Select($"id={value}")[0]["TypeName"];
+                object typeName = Manager.ProductTypes.Table.Find(pt => pt.ID == (int)value).TypeName;
                 return typeName;
             }
             return "Undefined";
@@ -36,10 +37,17 @@ namespace DLinkTradeApp.InnerPages {
         private ProductsViewPage() {
             InitializeComponent();
 
-            listBox.ItemsSource = Manager.Products.Table;
+           
+            var types = new List<ProductType>(Manager.ProductTypes.Table);
+            types.Insert(0, new ProductType(-1, "Все типы"));
+            typeBox.SelectedIndex = 0;
+
+            typeBox.ItemsSource = types;
+            FilterUpdate();
         }
 
         public void ForceUpdate() {
+            FilterUpdate();
             listBox.Items.Refresh();
         }
 
@@ -51,7 +59,27 @@ namespace DLinkTradeApp.InnerPages {
             // TODO Открытие меню для выбора кол-ва товара и пункта выдачи
 
             Product pr = (Product)(sender as Button).DataContext;
-            WorkPage.get.ChangePage(5, pr);
+            WorkPage.get.ChangePage(6, pr);
+        }
+
+        private void FilterUpdate() {
+            var result = Manager.Products.Table;
+            if (typeBox.SelectedIndex > 0) {
+                var type = typeBox.SelectedItem as ProductType;
+                result = result.Where(p => p.ProductType == type.ID).ToList();
+            }
+
+            result = result.Where(p => p.ProductName.ToLower().Contains(searchBox.Text.ToLower())).ToList();
+
+            listBox.ItemsSource = result;
+        }
+
+        private void searchBox_Changed(object sender, TextChangedEventArgs e) {
+            FilterUpdate();
+        }
+
+        private void typeBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            FilterUpdate();
         }
     }
 }

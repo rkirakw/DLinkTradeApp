@@ -8,18 +8,24 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BuyPage" x:Name="page">
 
-    <Grid Background="#FF292828">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FFC9BDE2" Offset="0"/>
+                <GradientStop Color="#FFA5DAEA" Offset="0.985"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <StackPanel x:Name="displayContainer" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock x:Name="prodName" Foreground="Azure" Text="Название: "
+            <TextBlock x:Name="prodName" Foreground="Black" Text="Название: "
                        FontSize="20" FontFamily="Times New Roman"
                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Image x:Name="prodImg" Source="pack://application:,,,/Resources/Dlogo.png"
                    Height="200" Width="200"
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBlock x:Name="prodCost" Foreground="Azure" Text="Стоимость: "
+            <TextBlock x:Name="prodCost" Foreground="Black" Text="Стоимость: "
                        FontSize="20" FontFamily="Times New Roman"
                        HorizontalAlignment="Center"/>
-            <TextBlock Width="180" Height="20" Foreground="Azure"
+            <TextBlock Width="180" Height="20" Foreground="Black"
                            Text="{Binding ElementName=prodAmount, Path=Value, StringFormat=Количество: {0} шт.}" FontSize="20"
                            FontFamily="Times New Roman"
                            VerticalAlignment="Center"
@@ -31,9 +37,16 @@
                         TickFrequency="1"/>
             <Button x:Name="buyButton" Style="{x:Null}"
                     Click="buyButton_Click" Width="120" Height="30"
-                    Content="Оформить заказ" Foreground="Azure" Background="Green"
+                    Content="Оформить заказ" Foreground="Azure"
                     Margin="0 5 0 0" FontSize="14"
-                    HorizontalAlignment="Center"/>
+                    HorizontalAlignment="Center">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF209999" Offset="0.009"/>
+                        <GradientStop Color="#FF3DD1A8" Offset="0.959"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
 
     </Grid>

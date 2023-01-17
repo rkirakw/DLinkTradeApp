@@ -11,35 +11,48 @@
         <local:TypeConverter x:Key="typeConverter"/>
     </Page.Resources>
 
-    <Grid Background="#FF292828">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FFC9BDE2" Offset="0"/>
+                <GradientStop Color="#FFA5DAEA" Offset="0.985"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <StackPanel Orientation="Horizontal" Height="25">
-                <TextBlock Text="Поиск: " Foreground="Azure" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBox x:Name="searchBox" Foreground="Black" Width="200" Background="DarkGray" TextChanged="searchBox_Changed"/>
+                <TextBlock Text="Поиск: " Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox x:Name="searchBox" Foreground="Black" Width="200" Background="Azure" TextChanged="searchBox_Changed"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Тип продукта: " Foreground="Azure" TextAlignment="Right" Width="100"/>
+                <TextBlock Text="Тип продукта: " Foreground="Black" TextAlignment="Right" Width="100"/>
                 <ComboBox x:Name="typeBox" Width="150" SelectionChanged="typeBox_SelectionChanged" DisplayMemberPath="TypeName"/>
             </StackPanel>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       Grid.Row="1">
-            <ItemsControl x:Name="listBox" Background="#FF292828">
+            <ItemsControl x:Name="listBox">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="5" BorderThickness="3" BorderBrush="SteelBlue" CornerRadius="4">
                             <StackPanel Margin="3">
                                 <Image Height="200" Width="200" x:Name="img" Visibility="Visible" Source="{Binding Image}"/>
-                                <TextBlock Foreground="Azure" x:Name="desc" Width="200" Height="175" Visibility="Collapsed" Text="{Binding Description}" TextWrapping="Wrap"/>
-                                <Button x:Name="buyButton" Background="LightGreen" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed"/>
-                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>
-                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Название: {0}, Path=ProductName}"/>
-                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0} руб., Path=Cost}"/>
+                                <TextBlock Foreground="Black" x:Name="desc" Width="200" Height="175" Visibility="Collapsed" Text="{Binding Description}" TextWrapping="Wrap"/>
+                                <Button x:Name="buyButton" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed">
+                                    <Button.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF209999" Offset="0.009"/>
+                                            <GradientStop Color="#FF3DD1A8" Offset="0.959"/>
+                                        </LinearGradientBrush>
+                                    </Button.Background>
+                                </Button>
+                                <TextBlock Foreground="Black" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>
+                                <TextBlock Foreground="Black" Text="{Binding StringFormat=Название: {0}, Path=ProductName}"/>
+                                <TextBlock Foreground="Black" Text="{Binding StringFormat=Цена: {0} руб., Path=Cost}"/>
                             </StackPanel>
                         </Border>
                         <DataTemplate.Triggers>

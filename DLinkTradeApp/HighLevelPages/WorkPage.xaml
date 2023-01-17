@@ -7,8 +7,17 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WorkPage">
+    <Page.Resources>
+        <Image x:Key="basketImage" Source="pack://application:,,,/Resources/basket.png"/>
+    </Page.Resources>
 
-    <Grid Background="Black">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FFC9BDE2" Offset="0"/>
+                <GradientStop Color="#FFA5DAEA" Offset="0.985"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="103*"/>
             <RowDefinition Height="347*"/>
@@ -22,8 +31,21 @@
                VerticalAlignment="Center"
                HorizontalContentAlignment="Center"
                FontSize="35"
-               Foreground="White" FontWeight="Bold" FontFamily="Times New Roman"
+               Foreground="Black" FontWeight="Bold" FontFamily="Times New Roman"
                x:Name="pageName"/>
+
+        <Button Grid.Column="1" Content="{StaticResource basketImage}" Width="65"
+                Height="65" Background="Transparent"
+                BorderThickness="2"
+                HorizontalAlignment="Right"
+                Margin="0 0 10 0" Click="ChangePageButton" Tag="5">
+            <Button.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA280EA" Offset="0"/>
+                    <GradientStop Color="#FF5CCFF1" Offset="0.985"/>
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+        </Button>
 
         <StackPanel Orientation="Vertical" ButtonBase.Click="ChangePageButton" Margin="0,12,0,0" Grid.Row="1">
             <Button Tag="4" Content="Все продукты"/>
@@ -31,7 +53,6 @@
             <Button Tag="1" Content="Маршрутизаторы"/>
             <Button Tag="2" Content="Межсетевые экраны"/>
             <Button Tag="3" Content="Медиа конвертеры"/>
-            <Button Tag="5" Margin="0 180 0 0" Content="Заказы"/>
         </StackPanel>
 
         <Image VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -41,6 +62,7 @@
         <Frame x:Name="mainFrame"
                NavigationUIVisibility="Hidden"
                JournalOwnership="OwnsJournal"
-               Grid.Column="1" Margin="0,12,0,0" Grid.Row="1"/>
+               Grid.Column="1" Margin="0,12,0,0" Grid.Row="1"
+               BorderBrush="AliceBlue" BorderThickness="0"/>
     </Grid>
 </Page>

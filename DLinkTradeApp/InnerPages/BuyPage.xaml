@@ -19,8 +19,8 @@
             <TextBlock x:Name="prodCost" Foreground="Azure" Text="Стоимость: "
                        FontSize="20" FontFamily="Times New Roman"
                        HorizontalAlignment="Center"/>
-            <TextBlock Width="100" Height="20" Foreground="Azure"
-                           Text="{Binding ElementName=prodAmount, Path=Value, StringFormat='Кол-во: {0}'}" FontSize="20"
+            <TextBlock Width="180" Height="20" Foreground="Azure"
+                           Text="{Binding ElementName=prodAmount, Path=Value, StringFormat=Количество: {0} шт.}" FontSize="20"
                            FontFamily="Times New Roman"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"/>

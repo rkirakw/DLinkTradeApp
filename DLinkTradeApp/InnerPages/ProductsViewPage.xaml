@@ -19,7 +19,7 @@
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <StackPanel Orientation="Horizontal" Height="25">
                 <TextBlock Text="Поиск: " Foreground="Azure" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBox x:Name="searchBox" Foreground="Azure" Width="200" Background="DarkGray" TextChanged="searchBox_Changed"/>
+                <TextBox x:Name="searchBox" Foreground="Black" Width="200" Background="DarkGray" TextChanged="searchBox_Changed"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Тип продукта: " Foreground="Azure" TextAlignment="Right" Width="100"/>
@@ -39,7 +39,7 @@
                                 <Button x:Name="buyButton" Background="LightGreen" Style="{StaticResource buyButton}" Click="BuyButtonClick" Foreground="Black" Content="Купить" Visibility="Collapsed"/>
                                 <TextBlock Foreground="Azure" Text="{Binding StringFormat=Тип: {0}, ConverterParameter=TYPE, Converter={StaticResource typeConverter}, Path=ProductType}"/>
                                 <TextBlock Foreground="Azure" Text="{Binding StringFormat=Название: {0}, Path=ProductName}"/>
-                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0}, Path=Cost}"/>
+                                <TextBlock Foreground="Azure" Text="{Binding StringFormat=Цена: {0} руб., Path=Cost}"/>
                             </StackPanel>
                         </Border>
                         <DataTemplate.Triggers>

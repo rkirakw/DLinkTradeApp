@@ -28,7 +28,7 @@ namespace DLinkTradeApp.InnerPages {
             InitializeComponent();
             _pr = prod;
             prodName.Text += prod.ProductName;
-            prodCost.Text += prod.Cost;
+            prodCost.Text += $"{prod.Cost} руб.";
             prodImg.Source = prod.Image;
         }
 

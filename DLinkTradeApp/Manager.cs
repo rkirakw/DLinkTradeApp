@@ -127,11 +127,8 @@ namespace DLinkTradeApp {
             ProductTypes = new DataBaseTable<ProductType>();
 
             // Установка соеденения с базой данных
-            string connStr = string.Empty;
-            using(FileStream fs = new FileStream("config.json", FileMode.OpenOrCreate)) {
-                var data = JsonSerializer.Deserialize<DataBaseConnectionData>(fs);
-                connStr = $"server={data.Server};user={data.User};database={data.Database};port={data.Port};password={data.Password};";
-            }
+            var data = JsonSerializer.Deserialize<DataBaseConnectionData>(File.ReadAllText("config.json"));
+            string connStr = $"server={data.Server};user={data.User};database={data.Database};port={data.Port};password={data.Password};";
             try {
                 GetConnection = new MySqlConnection(connStr);
                 GetConnection.Open();

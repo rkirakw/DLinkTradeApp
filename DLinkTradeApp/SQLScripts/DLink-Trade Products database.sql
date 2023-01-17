@@ -58,6 +58,7 @@ begin
 	prepare maxID from @mxstatement;
     execute maxID;
     
+    set @temp = coalesce(@result, '1');
     set @resetAutoInc = concat('alter table ', tbname, ' AUTO_INCREMENT = ', @result);
     prepare rai from @resetAutoInc;
     execute rai;

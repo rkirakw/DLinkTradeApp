@@ -18,10 +18,14 @@
     </Page.Resources>
 
     <Grid Background="LightCyan">
-        <Image Height="145" Source="pack://application:,,,/Resources/dlinklogo.png" HorizontalAlignment="Center" Stretch="UniformToFill" Width="345" VerticalAlignment="Top"/>
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="fieldPanel">
-            <TextBlock Text="Авторизация" FontSize="20" HorizontalAlignment="Center" Foreground="Azure"
+        <StackPanel>
+            <Image Height="145" Source="pack://application:,,,/Resources/dlinklogo.png" HorizontalAlignment="Center" Stretch="UniformToFill" Width="345" VerticalAlignment="Top"/>
+            <TextBlock Text="Вход в систему" FontSize="20" HorizontalAlignment="Center" Foreground="Black"
                        FontFamily="Times New Roman"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="fieldPanel" Width="200">
+            
+            <Label Content="Логин" HorizontalAlignment="Left"/>
             <TextBox Width="200" Height="25" x:Name="loginText" HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
                      FontSize="14"
@@ -34,6 +38,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
+            <Label Content="Пароль" VerticalContentAlignment="Top"/>
             <PasswordBox Width="200" Height="25" Margin="0 5 0 0" x:Name="pass" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Button x:Name="logButton" Width="100" Margin="0 5 0 0" Content="Войти" Click="LogButtonClick" Style="{x:Null}"/>
         </StackPanel>

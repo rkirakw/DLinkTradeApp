@@ -18,7 +18,7 @@
     </Page.Resources>
 
     <Grid Background="LightCyan">
-        <StackPanel>
+        <StackPanel VerticalAlignment="Top">
             <Image Height="145" Source="pack://application:,,,/Resources/dlinklogo.png" HorizontalAlignment="Center" Stretch="UniformToFill" Width="345" VerticalAlignment="Top"/>
             <TextBlock Text="Вход в систему" FontSize="20" HorizontalAlignment="Center" Foreground="Black"
                        FontFamily="Times New Roman"/>
